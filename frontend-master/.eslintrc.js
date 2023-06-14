@@ -26,7 +26,7 @@ module.exports = {
     'quotes': 'off',
     'indent': ['error', 2],
     'comma-dangle': 'off',
-    'linebreak-style': ['error', 'windows'],
+    'linebreak-style': ['error', 'linux'],
     'arrow-parens': 'off',
     'require-jsdoc': 'off',
     'no-sparse-arrays': 'off',

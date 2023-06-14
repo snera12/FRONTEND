@@ -1,7 +1,6 @@
 {
   "name": "su-mks-frontend",
   "version": "2.27.1",
-  "description": "",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --progress",
@@ -46,6 +45,7 @@
     "vue-eslint-parser": "^9.0.3",
     "vue-good-table-next": "^0.1.0"
   },
-  "_id": "su-mks-frontend@2.0.0",
-  "readme": "ERROR: No README data found!"
+  "main": ".eslintrc.js",
+  "license": "ISC",
+  "description": ""
 }
