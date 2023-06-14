@@ -1,0 +1,32 @@
+:root {
+    --main-bg-color: rgb(235, 238, 240);
+    --menu-bg-color: rgb(31, 44, 51);
+    --menu-submenu-active-color: rgb(5, 22, 32);
+    --menu-submenu-active-shadow-color: rgba(5, 22, 32, 0.5);
+    --second-bg-color: rgb(6, 50, 76);
+    --board-head-bg-color: white;
+    --closer-color: rgb(3, 68, 106);
+    --closer-bg-color: rgb(255, 255, 255);
+    --active-color: rgb(11, 45, 66);
+    --selected-border-color: rgb(135, 209, 255);
+    --tr-hover-color: rgb(233, 245, 255);
+    --tr-selected-color: rgb(252, 247, 195);
+    --main-txt-color: rgb(0, 0, 0);
+    --menu-txt-color: rgb(245, 245, 245);
+    --main-link-color: rgb(0, 238, 255);
+    --node-work-color: rgb(67, 207, 48);
+    --node-unavailiable-color: grey;
+    --second-txt-color: rgb(99, 99, 99);
+    --terminal-txt-color: rgb(0, 148, 0);
+    --alarm-color: rgb(148, 0, 0);
+    --info-tooltip-color: rgb(0, 0, 139); 
+
+    --critical-problem-color: rgb(198, 40, 40);
+    --high-problem-color: rgb(255, 87, 34);
+    --middle-problem-color: rgb(255, 160, 89);
+    --small-problem-color: rgb(255, 200, 89);
+    --information-problem-color: rgb(116, 153, 255);
+    --ok-problem-color: rgb(106, 216, 106);
+    --indeterminate-problem-color: rgb(151, 170, 179);
+    --maintenance-problem-color: rgb(253, 203, 150);
+}

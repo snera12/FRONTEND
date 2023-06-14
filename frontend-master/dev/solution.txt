@@ -1,0 +1,105 @@
+1. Создание проекта
+  1.1. clone repo
+  1.2. npm init
+  1.3. npm i -D webpack webpack-cli webpack-dev-server clean-webpack-plugin mini-css-extract-plugin sass-loader sass css-loader cross-env @babel/core @babel/preset-env babel-loader @babel/register @babel/cli core-js@3 eslint eslint-webpack-plugin @babel/eslint-parser eslint-config-google @babel/plugin-transform-runtime @babel/plugin-syntax-top-level-await @babel/plugin-proposal-optional-chaining webpack-remove-empty-scripts
+  1.4. npx eslint --init // js-module (import/export) + vue + browser
+  1.5. browserlist
+
+2. Сконнектим фронтенд с серверной частью
+  
+  2.1. В webpack.config.js пропишем псевдоним в host
+```
+  devServer: {
+    open:    true,
+    port:    3003,
+    host:    'devlocalhost',
+  },
+``` 
+  Его же пропишем в файле hosts (windows/system32/hosts):
+127.0.0.1 devlocalhost
+  А в темплейтах django вызов производится так:
+<script src="http://devlocalhost:3003/script.js"></script>
+<link rel="stylesheet" href="http://devlocalhost:3003/css/layout.css">
+  
+  После запуска devServer страница с сервера получит скрипт с локального адреса вне зависимости от ip машины и сервера
+
+  2.2 Для того, чтобы обойти защиту CORS добавим заголовок:
+```
+  devServer: {
+    ...
+    headers: {"Access-Control-Allow-Origin": "*"},
+  },
+```
+
+3. Git Flow.
+  
+  В проекте 2 связанных репозитория: бэк (весь бэк + джанго) + фронт (node + webpack + js). git для фронта не имеет особенностей.
+  
+  3.1. Для бэка изменение файлов осуществляется прямо на действующем сервере. Логично, что коммитить лучше всего прямо с папки, где производятся изменения. Доступ в оба репозитория из одного экземпляра vsCode затруднён, поскольку имеющиеся бесплатные ssh-fs плагины и программы имеют критические недостатки. (далее подробно -- можно пропустить до слов "Поэтому рабочая схема сейчас такая.")
+  
+  SSHFS-WIN manager подключает SSH как сетевой диск, но открытая папка в vscode не задействует git полноценно, возникают ошибки (
+  $ git status fatal: failed to stat '//sshfs/user@10.24.1.139/': Function not implemented 
+  $ work-tree error
+  ) при отменах индексированных файлов (git reset file) и др. Кроме того, это медленная программа, сетевое обращение к каждому файлу идёт по 300-600мс (https://github.com/winfsp/sshfs-win/issues/120), что на 400 файлах превращается в 10 минут.
+  
+  Плагин vscode-sshfs добавляет в рабочую область папку по SSH, но git при записях обращается к файловой системе как к /, забывая про букву сетевого диска. Не лечится: официальный баг плагина (https://github.com/SchoofsKelvin/vscode-sshfs/issues/31) отправляет к разработчикам vscode, а microsoft не хочет ничего делать c этим, потому что трудности с файловыми системами им решать труднее, чем сделать полностью удалённый vscode.
+  
+  Указанный ошибочный адрес '/' превращается в 'C:/app/'. Я попробовал туда подсунуть всю папку .git. Он даже её обнаружил, подтянул, но потом захотел найти там же рядом и все файлы проекта. Не класть же туда кеш-копию sshfs-программы (кеширование же односторонний процесс), кроме того бесплатная версия программы SFPT-Disc3 (имеет настраиваемый кеш) за 2000+ попыток соединиться по SSH смогла только 2 раза.
+  
+  Остальные перепробованные мной программы NetDrive, WebDrive, Mountain Duck, утилиты WinFsp, sshfs, win-sshfs, Dokan SSHFS, какие-то ещё плагины или вовсе не подключаются или выдают те же и другие ошибки (например, принципиально не видят файлы с . вначале).
+  
+  Лишь только платная ExpanDrive версии 8+ из коробки отлично подключается, и поддерживает все необходимые git протоколы взаимодействия: папка добавляется в рабочую область. 50$ я пожалел, а взло... захватить военный трофей мне не удалось.
+  
+  Не пробовал настроить работу с git из другой папки (git --git-dir= --work-tree=), кажется (?), там будут какие-то сетевые задачи, которые мне не под силу.
+  
+  Поэтому рабочая схема сейчас такая. Чтобы не переключаться между окнами можно изменять файлы на сервере, добавив папку сервера в рабочую область vscode при помощи плагина vscode-sshfs. А для commit и push, я запускаю через плагин "Remote - SSH" удалённый экземпляр VSCode, а в нём терминал сервера, который имеет быстрый доступ до индекса git и всех файлов, и репозиторий там рядом.
+  
+  3.2. Добавить в файл .git/config подпись
+[user]
+	name = drakoan
+	email = drakoan@gmail.com
+  
+  3.3. Настройка ssh на бэке.
+  добавить в ~/.ssh/ файл ключа к репо. Прописать ему только чтение:
+>>> chmod =600 ~/.ssh/file_ssh_key
+
+в файле .git/config указать путь до него:
+[core]
+	sshCommand = "ssh -F ~/.ssh/config"
+
+  3.3. Отменить отслеживание переноса строк, отличающихся на win и unix системах. Добавить в файл  .git/config
+  
+  [core]
+	fileMode = false
+  	autocrlf = true
+	
+	(или то же самое командами:
+>>> git config core.fileMode false
+>>> git config core.autocrlf true
+
+	Обнаружена проблема: при перезапуске vscode файл конфига сохраняет изменения, но git почему-то про них забывает. Приходится перезаписывать.
+
+  3.4. В проекте 2 связанных репозитория. Для получения стабильных сборок бэк+фронт в конце коммитов я добавляю подпись [ik001] - integration key number 001.
+1. npm install -g @vue/cli
+2. vue create app
+3. npm i -D clean-webpack-plugin mini-css-extract-plugin sass-loader sass css-loader @babel/core @babel/preset-env babel-loader @babel/register @babel/cli core-js@3 eslint eslint-webpack-plugin @babel/eslint-parser eslint-config-google @babel/plugin-transform-runtime @babel/plugin-syntax-top-level-await @babel/plugin-proposal-optional-chaining
+4. npx eslint --init // js-module (import/export) + vue + browser
+
+?? vue inspect > webpackConfigDev.js
+?? vue inspect --production > webpackConfigProd.js
+
+// из инета: клею vue и django. прописываю проксирование запросов в django.
+// vue.config.js
+/**
+ * @type {import('@vue/cli-service').ProjectOptions}
+ */
+module.exports = {
+    devServer: {
+        proxy: {
+            "/": {
+                target: "http://localhost:8000"
+            }
+        },
+    }
+}
+// И вуаля, вы запускаете дев-сервер монги и дев-сервер джанги в разных коснолях, и они прекрасно между собой общаются.

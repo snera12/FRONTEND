@@ -1,0 +1,304 @@
+@import './variables.scss';
+@import './themes/blue/color-vars.scss';
+
+body {
+  position: absolute;
+  overflow-x: hidden;
+  background-color: var(--main-bg-color);
+  color: var(--main-txt-color);
+  font-family: Helvetica;
+  margin: 0px;
+  padding: 0px;
+}
+
+div#app {
+  position: relative;
+}
+
+.map-div,
+.node-table-div,
+.web-terminal {
+  margin: calc(var(--margin-size)*2);
+  margin-top: calc(var(--margin-size)*3);
+  background-color: var(--second-bg-color);
+}
+
+.map-div {
+  grid-area: map;
+  margin-right: var(--margin-size);
+  height: clamp(500px, minmax(50vh, 71vh), 1200px);
+}
+
+.node-table-div {
+  grid-area: node-table;
+  margin-left: var(--margin-size);
+}
+
+.web-terminal {
+  grid-area: terminal;
+  margin-bottom: 0;
+  margin-top: calc(var(--margin-size)*2);
+  overflow-x: hidden;
+  text-align: left;
+  vertical-align: bottom;
+  max-height: 180px;
+  display: table-cell;
+  align-items: bottom;
+  padding-left: 6px;
+  color: var(--terminal-txt-color);
+  background-color: var(--active-color);
+  overflow-y: auto;
+}
+
+/* custom scroll */
+.web-terminal::-webkit-scrollbar-button {
+  background-color: var(--second-bg-color);
+  height: 10%;
+}
+
+.web-terminal::-webkit-scrollbar {
+  width: 6px;
+}
+
+// .web-terminal::-webkit-scrollbar-button:increment {
+//   border-radius: 0% 0% 0% 75%;
+// }
+
+// .web-terminal::-webkit-scrollbar-button:decrement {
+//   border-radius: 75% 0% 0% 0%;
+// }
+
+.web-terminal::-webkit-scrollbar-track,
+.web-terminal::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.web-terminal::-webkit-scrollbar-thumb {
+  height: 12px;
+  background-color: var(--second-bg-color);
+}
+
+.web-terminal::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: var(--closer-color);
+  pointer-events: none;
+}
+
+.web-terminal::-webkit-scrollbar-thumb:window-inactive {
+  // background-color: var(--main-bg-color);
+  opacity: .3;
+}
+
+.web-terminal::-webkit-scrollbar-button:vertical:hover {
+  background-color: var(--closer-color);
+}
+/* End of custom scroll */
+
+.table-node {
+  width: 100%;
+//  margin-top: max(2.5vh, 18px);
+  border-collapse: collapse;
+  th {
+    height: max(2.5vh, 18px);
+    color: var(--second-txt-color);
+    text-align: left;
+    border: none;
+    border-bottom: 2px solid var(--closer-color);
+  }
+  td {
+    height: max(2.5vh, 18px);
+    border: none; 
+    border-bottom: 1px solid var(--closer-color);
+    border-right: 1px dashed var(--closer-color);    
+  }
+  th, td {
+    padding-left: 6px;
+  }
+  th:first-child,
+  td:first-child{
+    padding-left: 12px;
+  }
+  td:last-child{
+    border-right: none;
+  }
+}
+
+.table-name {
+  color: var(--main-txt-color);
+  padding-left: 12px;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  font-weight: bold;
+}
+
+.table-node a {
+  color: var(--main-link-color);
+}
+
+.node-state-work {
+  color: var(--node-work-color);
+}
+
+.node-state-undermaintenance {
+  color: var(--second-txt-color)
+}
+
+.node-state-unavailiable {
+  color: var(--node-unavailiable-color);
+}
+.node-state-crash {
+  color: var(--alarm-color);
+}
+
+.unselectable {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.map {
+  min-height: 98%;
+  height: calc((50vw - (max(12vw, 150px) / 2) - var(--margin-size)) * 0.98);
+  width: 98%;
+  padding-left: 1%;
+  padding-top: 1%;
+}
+
+.fas {
+  -moz-osx-font-smoothing:grayscale;
+  -webkit-font-smoothing:antialiased;
+  display:inline-block;
+  font-style:normal;
+  font-variant:normal;
+  text-rendering:auto;
+  line-height:1;
+  margin-right: .3em;
+  margin-left: .3em;
+  // font-family:"Font Awesome 5 Free";
+  font-weight:900;
+}
+
+.fa-sm {
+  font-size:.875em;
+}
+
+.fa-key:before {
+  content:"\1F511";
+}
+
+.fa-lock:before {
+  content:"\1F512"
+}
+
+.fa-unlock:before {
+  content:"\1F513"
+}
+
+.fa-trash:before{
+  content:"\1F5D1"
+}
+
+.fa-edit:before{
+  content:"\1F589"
+}
+
+.btn-table {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: .15s ease-in-out;
+    // color .15s ease-in-out,
+    // background-color .15s ease-in-out,
+    // border-color .15s ease-in-out,
+    // box-shadow .15s ease-in-out;
+}
+
+.table-btn-success {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+// http://10.24.1.139/static/css/fa-all.css
+// @font-face{font-family:"Font Awesome 5 Free";
+//   font-style:normal;
+//   font-weight:900;
+//   src:url(../webfonts/fa-solid-900.eot);
+//   src:url(../webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
+//   url(../webfonts/fa-solid-900.woff2) format("woff2"),
+//   url(../webfonts/fa-solid-900.woff) format("woff"),
+//   url(../webfonts/fa-solid-900.ttf) format("truetype"),
+//   url(../webfonts/fa-solid-900.svg#fontawesome) format("svg")
+// }
+
+.scrollable-x {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.scrollable-y {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.scrollable-xy {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.unscrollable {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0px;
+}
+
+.display-true {
+  display: block;
+}
+
+.noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.hovered:hover {
+  cursor: pointer;
+}
+
+.itooltip {
+  color: darkblue;
+  font-weight: bold;
+  font-size: smaller;
+  cursor: pointer;
+}

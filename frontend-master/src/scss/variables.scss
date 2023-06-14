@@ -1,0 +1,15 @@
+@import './fonts';
+
+:root{
+  --print-middle-color: rgb(60, 60, 60);
+  --rzd-red-color: rgb(226, 26, 26);
+  --margin-size: 4px;
+  --scroll-width: calc(100vw - 100%);
+  --critical-problem-border: 2pt black solid;
+  --high-problem-border: 1pt black solid;
+  --middle-problem-border: 1pt var(--print-middle-color) dashed;
+  --small-problem-border: 1pt gray dotted;
+  --title-font-family: "RussianRail", "Arial", sans-serif;
+  --nav-font-family: "FSRailway", "IBM_Plex_Sans", sans-serif;
+  --regural-font-family: "IBM_Plex_Sans", "Arial", sans-serif;
+}

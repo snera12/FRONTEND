@@ -1,0 +1,21 @@
+:root {
+--main-bg-color: rgb(16, 16, 16);
+  --menu-bg-color: var(--main-bg-color);
+  --second-bg-color: rgb(43, 43, 43);
+  --board-head-bg-color: var(--second-bg-color);
+  --closer-color: rgb(69, 69, 69);
+  --active-color: rgb(28, 28, 28);
+
+  --selected-border-color: rgb(245, 245, 245);
+  --tr-selected-color: var(--closer-color);
+  --tr-hover-color: red; // TODO
+
+  --main-txt-color: rgb(215, 215, 215);
+  --menu-txt-color: var(--main-txt-color);
+  --main-link-color: rgb(0, 238, 255);
+  --node-work-color: rgb(67, 207, 48);
+  --node-unavailiable-color: grey;
+  --second-txt-color: rgb(99, 99, 99);
+  --terminal-txt-color: rgb(0, 148, 0);
+  --alarm-color: rgb(148, 0, 0);
+}
